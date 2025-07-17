@@ -205,10 +205,12 @@ function startDevServer() {
           }
         }
 
-        cp.execSync(`vite build && xcopy build public /Y /E /S && rmdir /S /Q build`, {
+        cp.execSync(`vite build`, {
           cwd: `src/apps/${folder}`,
           stdio: 'inherit',
         });
+        fs.cpSync(`src/apps/${folder}/build`, `src/apps/${folder}/public`, { recursive: true, force: true });
+        fs.rmSync(`src/apps/${folder}/build`, { recursive: true, force: true });
       }
     });
     fs.writeFileSync('.taurignore', tauriIgnore.join('\n'));
