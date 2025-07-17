@@ -196,7 +196,7 @@ function startDevServer() {
             const port = 3210 + sveltePorts.length;
             sveltePorts.push({ folder, port });
             console.log(`Starting Svelte dev server for ${folder} on port ${port}`);
-            cp.exec(`pnpm dev --port ${port}`, {
+            cp.exec(`vite dev --port ${port}`, {
               cwd: `src/apps/${folder}`,
             });
             console.log(`Svelte dev server for ${folder} started on port ${port}`);
@@ -205,7 +205,7 @@ function startDevServer() {
           }
         }
 
-        cp.execSync(`pnpm build`, {
+        cp.execSync(`vite build && xcopy build public /Y /E /S && rmdir /S /Q build`, {
           cwd: `src/apps/${folder}`,
           stdio: 'inherit',
         });
