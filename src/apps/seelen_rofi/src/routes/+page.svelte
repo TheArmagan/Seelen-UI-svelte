@@ -9,9 +9,6 @@
     UIColors,
   } from "@seelen-ui/lib";
 
-  let name = $state("");
-  let greetMsg = $state("");
-
   let apps = $state<any>([]);
 
   onMount(async () => {
@@ -19,16 +16,8 @@
   });
 </script>
 
-<div class="container">
-  {JSON.stringify(apps, null, 2)}
+<div class="w-full h-full flex items-center justify-center">
+  <div class="w-128 h-128 text-sm text-white bg-black">
+    {JSON.stringify(apps, null, 2)}
+  </div>
 </div>
-
-<style>
-  .container {
-    width: 300px;
-    height: 300px;
-    font-size: 14px;
-    color: white;
-    background-color: black;
-  }
-</style>

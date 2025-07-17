@@ -12,6 +12,9 @@ const config = {
     prerender: {
       handleHttpError: "warn",
       handleMissingId: "warn"
+    },
+    alias: {
+      "@/*": "./src/lib/*",
     }
   },
 };
