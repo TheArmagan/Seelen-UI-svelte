@@ -1,3 +1,4 @@
+import cp from "child_process";
 import esbuild from 'esbuild';
 import CssModulesPlugin from 'esbuild-css-modules-plugin';
 import express from 'express';
@@ -119,9 +120,23 @@ const OwnPlugin: esbuild.Plugin = {
   },
 };
 
+const sveltePorts: { folder: string, port: number }[] = [];
+
 function startDevServer() {
   const app = express();
-  app.use(express.static('dist'));
+  app.use('/dist', express.static('dist'));
+  app.get('/*', (req, res) => {
+    const folder = req.path.split('/')[1];
+    if (sveltePorts.some((p) => p.folder === folder)) {
+      const port = sveltePorts.find((p) => p.folder === folder)?.port;
+      if (port) {
+        res.redirect(`http://localhost:${port}${req.path.replace(`/${folder}`, '')}`);
+        return;
+      }
+    }
+    res.redirect(`/dist${req.path}`);
+    return;
+  });
   app.listen(3579, () => {
     console.info('Listening on http://localhost:3579');
   });
@@ -169,9 +184,46 @@ function startDevServer() {
   });
 
   if (serve) {
+    let tauriIgnore: string[] = [];
+    appFolders.forEach((folder) => {
+      let configFile = `src/apps/${folder}/svelte.config.js`;
+      let seelenConfigFile = `src/apps/${folder}/seelen.json`;
+      if (fs.existsSync(configFile) && fs.existsSync(seelenConfigFile)) {
+        const json = JSON.parse(fs.readFileSync(`src/apps/${folder}/seelen.json`, 'utf-8'));
+        switch (json.mode) {
+          case "de":
+          case "development": {
+            const port = 3210 + sveltePorts.length;
+            sveltePorts.push({ folder, port });
+            console.log(`Starting Svelte dev server for ${folder} on port ${port}`);
+            cp.exec(`pnpm dev --port ${port}`, {
+              cwd: `src/apps/${folder}`,
+            });
+            console.log(`Svelte dev server for ${folder} started on port ${port}`);
+            tauriIgnore.push(`src/apps/${folder}`);
+            break;
+          }
+        }
+
+        cp.execSync(`pnpm build`, {
+          cwd: `src/apps/${folder}`,
+          stdio: 'inherit',
+        });
+      }
+    });
+    fs.writeFileSync('.taurignore', tauriIgnore.join('\n'));
     await ctx.watch();
     startDevServer();
   } else {
+    appFolders.forEach((folder) => {
+      let configFile = `src/apps/${folder}/svelte.config.js`;
+      if (fs.existsSync(configFile)) {
+        cp.execSync(`pnpm build`, {
+          cwd: `src/apps/${folder}`,
+          stdio: 'inherit',
+        });
+      }
+    });
     await ctx.rebuild();
     await ctx.dispose();
   }

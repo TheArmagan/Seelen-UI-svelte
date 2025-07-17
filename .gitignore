@@ -6,7 +6,9 @@ node_modules
 .env
 target
 gen
+.taurignore
 
 # Submission Files
 /scripts/SBTemp
 monitoring.ps1
+.taurignore

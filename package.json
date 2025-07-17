@@ -13,8 +13,8 @@
     "build:ui:watch": "tsx scripts/build.ts --serve",
     "build:ui:production": "tsx scripts/build.ts --production",
     "translate": "tsx ./scripts/translate/mod.ts",
-    "lint": "eslint . --max-warnings 0",
-    "lint:fix": "eslint . --fix --max-warnings 0",
+    "-lint": "eslint . --max-warnings 0",
+    "-lint:fix": "eslint . --fix --max-warnings 0",
     "type-check": "tsc --noEmit",
     "postversion": "tsx scripts/postversion.ts",
     "postinstall": "lefthook install"

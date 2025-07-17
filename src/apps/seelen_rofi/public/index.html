@@ -1,12 +1,38 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
-    <link rel="stylesheet" href="./index.css" />
-    <script src="../shared/integrity.js" type="module"></script>
-    <script src="./index.js" type="module"></script>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tauri + SvelteKit + Typescript App</title>
+    
+		<link rel="modulepreload" href="./_app/immutable/entry/start.S3pDKNis.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/QCHAs3I7.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/DgJb6skV.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/mtOdJY-R.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/CViuv98N.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/DuRBPgL0.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.Cfxr1FDb.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/CWj6FrbW.js">
   </head>
-  <body>
-    <div id="root"></div>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents">
+			<script>
+				{
+					__sveltekit_shd0ak = {
+						base: new URL(".", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("./_app/immutable/entry/start.S3pDKNis.js"),
+						import("./_app/immutable/entry/app.Cfxr1FDb.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element);
+					});
+				}
+			</script>
+		</div>
   </body>
 </html>
